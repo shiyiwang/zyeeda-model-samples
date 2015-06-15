@@ -1,0 +1,35 @@
+{{#layout}}
+    <div id="laboratoryExecViewRegion"></div>
+{{/layout}}
+
+{{#view "laboratory-exec-view"}}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width: 30px;">#</th>
+                <th>文件名</th>
+                <th style="width: 100px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each downloadModuleS}}
+            <tr class="{{index}}">
+                <td>{{index}}</td>
+                <td>{{fileName}}</td>
+                <td>
+                    <a id="download-{{index}}" name="{{fileName}}" style="cursor:pointer;">
+                        <i class="icon-download-alt"></i>下载
+                    </a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a id="delete-{{index}}" name="{{fileName}}" style="cursor:pointer;">
+                        <i class="icon-remove"></i>删除
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+            <tr>
+               <td colspan="3">{{noDownloadModule}}</td>
+            </tr>
+        </tbody>
+    </table>
+{{/view}}

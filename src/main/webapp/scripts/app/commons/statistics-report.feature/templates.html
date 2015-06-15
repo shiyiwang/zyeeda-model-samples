@@ -1,0 +1,20 @@
+{{#layout}}
+    <div id="statistics-report-area" class="ui-layout-center"></div>
+{{/layout}}
+
+{{#view "statistics-report"}}
+    <div class="container-fluid report">
+        {{#each rowList}}
+        <div class="row-fluid">
+            {{#each groupList}}
+            <div class="span3 statistics-report">
+                <div index="report" style="cursor:pointer; margin:auto;" id="{{reportPermission}}" reportPermission="{{reportPermission}}">
+                    <i class="{{img}}"></i><br/>
+                    <span>{{reportName}}</span>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/each}}
+    </div>
+{{/view}}

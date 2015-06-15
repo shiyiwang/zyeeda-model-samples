@@ -1,0 +1,33 @@
+{{#layout}}
+<h3 class="se-flash-title" style="display:none;"></h3>
+<div id="flashPlayerArea" class="ui-layout-center" style="overflow:hidden; text-align:center; display:none;" />
+<div id="flashImagesArea" class="ui-layout-east" style="overflow:auto;" />
+{{/layout}}
+
+{{#view "flash-playOrPause"}}
+<div id="flashPlayer" name="flashPlayer" class="se-flash-player"></div>
+<button id="play-pause-button" class="btn btn-grey btn-large se-flash-play-pause-button" style="display:none;">
+  <i class="icon-play icon-2x icon-only"></i>
+</button>
+{{/view}}
+
+{{#view "flash-image"}}
+<div id="container-fluid" class="se-playlist-container">
+  {{#each columnArea}}
+  <div class="row-fluid">
+    {{#each videoArea}}
+    <div class="span6" id="video-item-{{id}}">
+      <div class="se-video-item-link">
+        <a href="javascript:void 0" id="fla-link-{{id}}" data-flashid="{{id}}">
+          <img id="fla-{{id}}"  src="invoke/system/upload/image/{{picture.id}}" alt='200x133' />
+          <div class="se-flash-img-title-body">
+            {{name}}
+          </div>
+        </a>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{/each}}
+</div>
+{{/view}}

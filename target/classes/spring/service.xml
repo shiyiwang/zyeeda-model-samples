@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--
+    <bean class="com.zyeeda.cdeio.ldap.internal.SunLdapServiceProvider" p:providerUrl="${ldap.providerUrl}" p:securityAuthentication="${ldap.securityAuthentication}"
+          p:systemSecurityPrincipal="${ldap.systemSecurityPrincipal}" p:systemSecurityCredentials="${ldap.systemSecurityCredentials}"
+          p:securityPrincipalTemplate="${ldap.securityPrincipalTemplate}" p:baseDn="${ldap.baseDN}" />
+    -->
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>validationMessages</value>
+			    <value>org.hibernate.validator.ValidationMessages</value>
+			</list>
+		</property>
+	</bean>
+</beans>

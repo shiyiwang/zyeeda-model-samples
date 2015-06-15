@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <named-query name="getSubDepartmentCount">
+        <query>
+            select count(d) from Department d where d.parent.id = :departmentId
+        </query>
+    </named-query>
+
+    <named-query name="getAccountCount">
+        <query>
+            select count(c) from Account c where c.department.id = :departmentId
+        </query>
+    </named-query>
+
+   <named-query name="getSubDepartments">
+        <query>
+            select d from Department d  where d.parent.id = :parentId
+        </query>
+    </named-query>
+
+    <named-query name="getChildrenDepartments">
+        <query>
+            select d from Department d where d.path like :likePath and d.path != :path
+        </query>
+    </named-query>
+
+    <named-query name="getSubAccounts">
+        <query>
+            select a from Account a left outer join a.department d where d.parent.id = :parentId
+        </query>
+    </named-query>
+
+    <named-query name="getChildrenAccounts">
+        <query>
+            select a from Account a left outer join a.department d where d.path like :likePath
+        </query>
+    </named-query>
+
+    <named-query name="getDepartmentCountByCodeAndId">
+        <query>
+            select count(d) from Department d where d.code = :departmentCode and d.id != :departmentId
+        </query>
+    </named-query>
+
+    <named-query name="getDepartmentCountByCode">
+        <query>
+            select count(d) from Department d where d.code = :departmentCode
+        </query>
+    </named-query>
+
+    <named-query name="getDepartmentByName">
+        <query>
+            select d from Department d where d.name = :name
+        </query>
+    </named-query>
+
+    <named-query name="getDepartmentByCode">
+        <query>
+            select d from Department d where d.code = :code
+        </query>
+    </named-query>
+</entity-mappings>

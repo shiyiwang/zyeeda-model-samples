@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: freemarker.xml,v c515641aaed4 2013/08/23 10:14:55 iorn $ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        ">
+
+    <bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="output_encoding">UTF-8</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">hh:mm:ss</prop>
+                <prop key="datetime_format">yyyy-MM-dd hh:mm:ss</prop>
+                <prop key="object_wrapper">default</prop>
+                <prop key="template_exception_handler">rethrow</prop>
+            </props>
+        </property>
+        <property name="templateLoaderPaths">
+            <list>
+                <value>WEB-INF/templates</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

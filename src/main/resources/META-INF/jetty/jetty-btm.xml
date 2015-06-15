@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+    <Call name="getConfiguration" class="bitronix.tm.TransactionManagerServices">
+        <Set name="serverId">jetty-btm-node0</Set>
+        <Set name="logPart1Filename"><SystemProperty name="jetty.home" default="." />/work/btm/btm1.tlog</Set>
+        <Set name="logPart2Filename"><SystemProperty name="jetty.home" default="." />/work/btm/btm2.tlog</Set>
+    </Call>
+</Configure>
+

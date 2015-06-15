@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<Configure id="wac" class="org.eclipse.jetty.webapp.WebAppContext">
+    <Call id="tm" name="getTransactionManager" class="bitronix.tm.TransactionManagerServices" />
+
+    <New class="org.eclipse.jetty.plus.jndi.Transaction">
+        <Arg><Ref refid="tm" /></Arg>
+    </New>
+
+    <New class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg></Arg>
+        <Arg>javax.transaction.TransactionManager</Arg>
+        <Arg><Ref refid="tm" /></Arg>
+    </New>
+
+    <New class="javax.naming.InitialContext">
+        <Call id="comp" name="lookup">
+            <Arg>java:comp</Arg>
+        </Call>
+    </New>
+    <Call name="bind" class="org.eclipse.jetty.jndi.NamingUtil">
+        <Arg><Ref refid="comp" /></Arg>
+        <Arg>TransactionSynchronizationRegistry</Arg>
+        <Arg>
+            <Call name="getTransactionSynchronizationRegistry" class="bitronix.tm.TransactionManagerServices" />
+        </Arg>
+    </Call>
+
+    <New class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg><Ref refid='wac' /></Arg>
+        <Arg>jdbc/defaultDS</Arg>
+        <Arg>
+            <New class="bitronix.tm.resource.jdbc.PoolingDataSource">
+                <Set name="className">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</Set>
+                <Set name="uniqueName">jdbc/defaultDS</Set>
+                <Set name="allowLocalTransactions">true</Set>
+                <Set name="minPoolSize">5</Set>
+                <Set name="maxPoolSize">30</Set>
+                <Get name="driverProperties">
+                    <Put name="URL">jdbc:mysql://localhost:3306/zyeeda_model?pinGlobalTxToPhysicalConnection=true&amp;useUnicode=yes&amp;characterEncoding=UTF-8</Put>
+                    <Put name="user">root</Put>
+                    <Put name="password">zy2eda@csg</Put>
+                </Get>
+                <Call name="init"></Call>
+            </New>
+        </Arg>
+    </New>
+</Configure>

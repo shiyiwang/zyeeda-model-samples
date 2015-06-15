@@ -1,0 +1,98 @@
+{{#layout}}
+<ul class="nav ace-nav pull-right">
+    <li id="tasks" class="grey ace-nav me-tasks-dropdown"></li>
+    <li id="notices" class="purple ace-nav me-notices-dropdown"></li>
+    <li class="light-blue user-profile">
+        <a id="title" data-toggle="dropdown" href="javascript:void 0;" class="user-menu dropdown-toggle"></a>
+        <ul id="dropdown" class="pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer"></ul>
+    </li>
+</ul>
+{{/layout}}
+
+{{#view "tasks"}}
+<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+    <i class="icon-tasks"></i>
+    <span class="badge badge-grey">{{taskCount}}</span>
+</a>
+
+<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-closer">
+    <li class="nav-header"> <i class="icon-ok"></i>
+        <font color="red">{{taskCount}}</font> 个待办任务待完成
+    </li>
+
+    {{#each tasks}}
+    <li>
+        <a title="{{title}}">
+            <div class="clearfix">
+                <span class="pull-left">{{titleTemp}}</span>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+
+    <li>
+        <a href="#feature/process/scaffold:process-taskinfo">
+            查看更多待办任务
+            <i class="icon-arrow-right"></i>
+        </a>
+    </li>
+</ul>
+{{/view}}
+
+{{#view "notices"}}
+<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+    <i class="icon-bell-alt icon-animated-bell"></i>
+    <span class="badge badge-important">{{noticeCount}}</span>
+</a>
+
+<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-closer">
+    <li class="nav-header"> <i class="icon-warning-sign"></i>
+        <font color="red">{{noticeCount}}</font> 个通知
+    </li>
+
+    {{#each notices}}
+    <li>
+        <a title="{{title}}" id="notice-link-{{id}}" data-id="{{id}}" style="cursor:pointer;">
+            <div class="clearfix">
+                <span class="pull-left">{{titleTemp}}</span>
+            </div>
+        </a>
+    </li>
+    {{/each}}
+
+    <li>
+        <a href="#feature/system/scaffold:my-notice">
+            查看更多通知
+            <i class="icon-arrow-right"></i>
+        </a>
+    </li>
+</ul>
+{{/view}}
+
+{{#view "title"}}
+<img class="nav-user-photo" src="assets/images/avatars/user.jpg" alt="用户头像" />
+<span class="user-info">
+    <small>欢迎,</small>
+    {{settings.currentUser.realName}}
+    <!-- {{settings.currentUser.accountName}} -->
+</span>
+
+<i class="icon-caret-down"></i>
+{{/view}}
+
+{{#view "dropdown"}}
+
+<!--
+<li>
+    <a href="#"><i class="icon-cog"></i>偏好设置</a>
+</li>
+-->
+
+<li>
+    <a href="#profile"><i class="icon-user"></i>用户信息</a>
+</li>
+<li class="divider"></li>
+<li>
+    <a href="{{settings.signOutUrl}}"><i class="icon-off"></i>退出</a>
+</li>
+{{/view}}

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: pom.xml,v c71beec06dc5 2012/07/28 07:13:56 tangrui $ -->
+
+<!--
+$License: Copyright &copyright 2013 Shenzhen Zyeeda Information Technology Co. Ltd. All rights reserved. $
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.zyeeda</groupId>
+        <artifactId>origin</artifactId>
+        <version>4-SNAPSHOT</version>
+    </parent>
+
+    <!--
+     | Change the following artifactId, version, name and url tags according to the project.
+    -->
+    <artifactId>zyeeda-model-samples</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Zyeeda :: Projects :: Model</name>
+    <url>http://www.zyeeda.com/projects/model</url>
+    <packaging>war</packaging>
+
+    <properties>
+        <cdeio.framework.version>2.5.0-SNAPSHOT</cdeio.framework.version>
+        <jetty.config>${project.build.outputDirectory}/META-INF/jetty</jetty.config>
+
+        <cdeio.version>2.5.0-SNAPSHOT</cdeio.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.zyeeda</groupId>
+            <artifactId>cdeio-core</artifactId>
+            <version>${cdeio.framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zyeeda</groupId>
+            <artifactId>cdeio-sso-openid</artifactId>
+            <version>${cdeio.framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+            <version>4.1.1.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.jxls</groupId>
+            <artifactId>jxls-core</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.10-FINAL</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.10-FINAL</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-jexl</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zyeeda</groupId>
+            <artifactId>cdeio-proxy</artifactId>
+            <version>${cdeio.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4-alpha1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/processes</directory>
+                <targetPath>${project.build.outputDirectory}/processes</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/rules</directory>
+                <targetPath>${project.build.outputDirectory}/rules</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/sql</directory>
+                <targetPath>${project.build.outputDirectory}/sql</targetPath>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>set-system-properties</goal>
+                        </goals>
+                        <configuration>
+                            <properties>
+                                <!--
+                                 | Make jetty use the project level logback configuration file.
+                                -->
+                                <property>
+                                    <name>logback.configurationFile</name>
+                                    <value>src/main/resources/logback.xml</value>
+                                </property>
+                            </properties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <jettyXml>
+                        ${jetty.config}/jetty.xml,${jetty.config}/jetty-http.xml,${jetty.config}/jetty-ssl.xml,${jetty.config}/jetty-https.xml,${jetty.config}/jetty-plus.xml,${jetty.config}/jetty-btm.xml
+                    </jettyXml>
+
+                    <webApp>
+                        <!--
+                         | Specify the correct context path.
+                        -->
+                        <contextPath>/model</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.cj.jshintmojo</groupId>
+                <artifactId>jshint-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+        	<plugins>
+        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        		<plugin>
+        			<groupId>org.eclipse.m2e</groupId>
+        			<artifactId>lifecycle-mapping</artifactId>
+        			<version>1.0.0</version>
+        			<configuration>
+        				<lifecycleMappingMetadata>
+        					<pluginExecutions>
+        						<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>
+        									org.codehaus.mojo
+        								</groupId>
+        								<artifactId>
+        									properties-maven-plugin
+        								</artifactId>
+        								<versionRange>
+        									[1.0-alpha-2,)
+        								</versionRange>
+        								<goals>
+        									<goal>
+        										set-system-properties
+        									</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore></ignore>
+        							</action>
+        						</pluginExecution>
+        					</pluginExecutions>
+        				</lifecycleMappingMetadata>
+        			</configuration>
+        		</plugin>
+        	</plugins>
+        </pluginManagement>
+    </build>
+
+    <scm>
+        <!--
+         | Change the SCM repository according to the project.
+        -->
+        <connection>scm:hg:http://bitbucket.org/zyeeda/zyeeda-model-samples</connection>
+        <developerConnection>scm:hg:${basedir}/../${project.artifactId}</developerConnection>
+        <url>http://bitbucket.org/zyeeda/zyeeda-model-samples</url>
+        <tag>HEAD</tag>
+    </scm>
+</project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<configuration debug="false">
+
+    <property name="applicationName" value="zyeeda-model-samples-1.0" />
+
+    <contextName>${applicationName}</contextName>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %logger.%M [%t] - %m%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/model.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/model_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5p %logger.%M [%t] - %m%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="ERROR" />
+    <logger name="org.hibernate" level="ERROR" />
+    <logger name="org.eclipse" level="ERROR" />
+    <logger name="org.eclipse.jetty" level="ERROR" />
+    <logger name="org.quartz" level="ERROR" />
+    <logger name="bitronix.tm" level="ERROR" />
+    <logger name="org.enhydra" level="ERROR" />
+    <logger name="org.objectweb" level="ERROR" />
+    <logger name="org.hibernate.engine.transaction.internal"
+        level="OFF" />
+    <logger name="org.apache.shiro.web.filter" level="TRACE" />
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

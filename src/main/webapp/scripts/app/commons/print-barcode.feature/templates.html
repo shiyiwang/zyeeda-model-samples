@@ -1,0 +1,18 @@
+{{#layout}}
+    <div id="barcode-area"></div>
+{{/layout}}
+
+{{#view "barcode-view"}}
+<div id="barcode_frame" style="width: 60mm;">
+    <div id="printArea">
+        {{#each equipments}}
+        <div id="barcode-area-{{aeestsCode}}" style="{{style}}">
+            <div style="text-align: center; word-break: keep-all; letter-spacing: 2.5px; margin-bottom: 10px; width: 50mm; font-size: 14px;">中国南方电网公司</div>
+            <div id="barcode-{{aeestsCode}}" style="width: 260px;"></div>
+
+            <div style="margin-top: 5px; text-align: center; word-break: keep-all; width: 50mm; font-size: 12px;">{{aeestsCode_1}}&nbsp;{{aeestsCode_2}}&nbsp;{{aeestsCode_3}}&nbsp;{{aeestsCode_4}}&nbsp;{{aeestsCode_5}}</div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/view}}

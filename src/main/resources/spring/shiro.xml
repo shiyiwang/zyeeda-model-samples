@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id: shiro.xml,v 599b75b134a5 2013/08/07 08:56:05 tangrui $ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+        ">
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+    <bean id="openIdProvider" class="com.zyeeda.cdeio.sso.openid.provider.support.DefaultOpenIdProvider"
+        p:name="${cdeio.application.name}"
+        p:serverProtocol="${cdeio.server.protocol:https}"
+        p:serverAddress="${cdeio.server.address}"
+        p:serverPort="${cdeio.server.port:8080}"
+        p:indexPath="${cdeio.sso.op.index.path:/}"
+        p:basePath="${cdeio.sso.op.base.path:/provider}"
+        init-method="init" />
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean"
+        p:securityManager-ref="securityManager"
+        p:loginUrl="#{openIdProvider.signInPath}"
+        p:successUrl="#{openIdProvider.indexPath}"
+        p:unauthorizedUrl="#{openIdProvider.signInPath}">
+        <property name="filters">
+            <util:map>
+                <entry key="antiRobot" value-ref="antiRobotFilter" />
+                <entry key="authc" value-ref="authenticationFilter" />
+                <entry key="signIn" value-ref="signInFilter" />
+                <entry key="endpoint" value-ref="endpointFilter" />
+                <entry key="signOut" value-ref="signOutFilter" />
+                <entry key="xrds" value-ref="xrdsFilter" />
+                <entry key="user" value-ref="userFilter" />
+                <entry key="check" value-ref="checkFilter" />
+                <entry key="index" value-ref="indexFilter" />
+                <entry key="open" value-ref="openEntityManagerFilter" />
+                <entry key="proxy" value-ref="proxyFilter" />
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /provider/signin = antiRobot, open, authc, signIn
+                /provider/signout = signOut
+                /provider/endpoint/** = endpoint, open, authc
+                /provider/xrds = xrds
+                /provider/user = user
+
+                /invoke/common-routers/get-depts-accounts-from-online = anon
+                /invoke/common-routers/get-companys-from-online = anon
+                /invoke/common-routers/get-equipments-from-online = anon
+                /invoke/common-routers/get-exec-infos-from-online = anon
+                /invoke/common-routers/deal-offline-data-to-online = anon
+
+                <!-- deprecated, only for backward compatibility -->
+                /provider/signin.jsp = antiRobot, authc, signIn
+                /provider/xrds.jsp = xrds
+                /provider/user.jsp = user
+
+                / = check, index
+                /invoke/** = check, open
+
+                <!-- report menu need proxy -->
+                /frameset/** = proxy
+                /run/** = proxy
+                /preview/** = proxy
+                /download/** = proxy
+                /parameter/** = proxy
+                /document/** = proxy
+                /output/** = proxy
+                /extract/** = proxy
+
+                /webcontent/birt/** = proxy
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <constructor-arg ref="realm" />
+    </bean>
+
+    <!--
+     | Ldap realm configuration.
+    <bean id="realm" class="com.zyeeda.cdeio.sso.openid.provider.realm.LdapRealm">
+        <constructor-arg ref="ldapTemplate" />
+    </bean>
+    -->
+
+    <bean id="realm" class="com.zyeeda.cdeio.sso.openid.provider.realm.JpaRealm"
+        p:credentialsMatcher-ref="passwordMatcher" />
+
+    <!--
+     | User mock realm for test only.
+     | When username and password match, the authentication succeeds.
+     -->
+    <!--
+    <bean id="realm" class="com.zyeeda.cdeio.sso.openid.provider.realm.MockRealm"
+        p:credentialsMatcher-ref="passwordMatcher" />
+    -->
+
+    <bean id="passwordMatcher" class="org.apache.shiro.authc.credential.PasswordMatcher"
+        p:passwordService-ref="passwordService" />
+
+    <bean id="passwordService" class="com.zyeeda.cdeio.sso.openid.provider.support.BCryptPasswordService" />
+
+    <!--
+     | Declare all filters.
+    -->
+    <bean id="antiRobotFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.security.AntiRobotFilter"
+        p:failureKeyAttribute="signInFailure"
+        p:cache-ref="signInTokenCache" />
+
+    <bean id="authenticationFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.OpenIdProviderAuthenticationFilter"
+        p:failureKeyAttribute="signInFailure"
+        p:openIdProvider-ref="openIdProvider"
+        p:cache-ref="signInTokenCache" />
+
+    <bean id="signInFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.SignInFilter"
+        p:configuration-ref="freemarkerConfiguration" />
+
+    <bean id="endpointFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.OpenIdProviderEndpointFilter"
+        p:openIdProvider-ref="openIdProvider" />
+
+    <bean id="signOutFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.SignOutFilter"
+        p:configuration-ref="freemarkerConfiguration"
+        p:openIdProvider-ref="openIdProvider" />
+
+    <bean id="checkFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.CheckAuthenticationFilter"
+        p:openIdProvider-ref="openIdProvider" />
+
+    <bean id="xrdsFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.XrdsFilter"
+        p:configuration-ref="freemarkerConfiguration"
+        p:openIdProvider-ref="openIdProvider" />
+
+    <bean id="userFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.UserFilter"
+        p:configuration-ref="freemarkerConfiguration"
+        p:openIdProvider-ref="openIdProvider" />
+
+    <bean id="indexFilter" class="com.zyeeda.cdeio.sso.openid.provider.web.IndexFilter"
+        p:configuration-ref="freemarkerConfiguration" />
+
+    <bean id="openEntityManagerFilter" class="org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter" />
+
+    <bean id="proxyFilter" class="com.zyeeda.proxy.filter.ProxyFilter"
+        p:proxyUrl="${cdeio.birt.proxy.url}" p:reverseCookie="${cdeio.birt.reverse.cookie}" />
+</beans>

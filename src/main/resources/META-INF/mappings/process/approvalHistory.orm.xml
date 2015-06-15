@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <named-query name="getApprovalHistorysByEntryId">
+        <query>
+            select ah from ApprovalHistory ah where ah.relatedEntryId = :entryId order by ah.operateTime asc
+        </query>
+    </named-query>
+
+    <named-query name="getApprovalHistorysByTaskId">
+        <query>
+            select ah from ApprovalHistory ah where ah.processTaskInfo.id = :taskId
+        </query>
+    </named-query>
+
+</entity-mappings>

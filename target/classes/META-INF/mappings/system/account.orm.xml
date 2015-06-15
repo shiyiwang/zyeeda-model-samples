@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <named-query name="getUserPermissions">
+        <query>
+            select distinct p.value from Account a inner join a.roles r inner join r.permissions p where a.id = :userId and p.value like '%:show'
+        </query>
+    </named-query>
+
+    <named-query name="getAccountExtensionByAccountId">
+        <query>
+            select a from AccountExtension a where a.account.id = :accountId
+        </query>
+    </named-query>
+
+    <named-query name="getAccountsByDepartmentIdAndRoleId">
+        <query>
+            select a from Account a inner join a.roles r where a.department.id = :departmentId and r.id = :roleId
+        </query>
+    </named-query>
+</entity-mappings>

@@ -1,0 +1,37 @@
+{{#layout}}
+    <div id="system-home-area" class="ui-layout-center"></div>
+{{/layout}}
+
+{{#view "system-home"}}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span6 home-container">
+                <div style="text-align:center; font-size:16px;">电能表信息统计</div>
+                <div id="meter" style="height:200px;"></div>
+            </div>
+            <div class="span6 home-container">
+                <div style="text-align:center; font-size:16px;">互感器信息统计</div>
+                <div id="transformer" style="height:200px;"></div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6 home-container">
+                <div style="text-align:center; font-size:16px;">
+                    <div id="choices" style="text-align:left;">
+                        <input type="radio" name="identity" value="2" checked="checked" />类型&nbsp;&nbsp;
+                        <input type="radio" name="identity" value="1" />单位&nbsp;&nbsp;
+                        <input type="radio" name="identity" value="3" />是否消缺
+                    </div>
+                    缺陷信息统计
+                </div>
+                <div id="defect" style="height:180px;" name="defect"></div>
+                <div id="flot-memo" style="text-align:center;height:30px;width:250px;height:20px;text-align:center;margin:0 auto" class="flot-memo" name="flot-memo"></div>
+            </div>
+            <div class="span6 home-container">
+                <div style="text-align:center; font-size:16px;">本年检定情况信息统计</div>
+                <div id="verification" style="height:220px;"></div>
+            </div>
+        </div>
+    </div>
+{{/view}}
+

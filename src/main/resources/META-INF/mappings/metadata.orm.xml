@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <persistence-unit-metadata>
+        <persistence-unit-defaults>
+            <schema>ZYEEDA_MODEL</schema>
+            <!--
+            <entity-listeners>
+                <entity-listener class="com.zyeeda.cdeio.revision.AutoRevisionEventListener">
+                    <pre-persist method-name="onPrePersist" />
+                    <pre-update method-name="onPreUpdate" />
+                </entity-listener>
+            </entity-listeners>
+        -->
+        </persistence-unit-defaults>
+    </persistence-unit-metadata>
+
+</entity-mappings>

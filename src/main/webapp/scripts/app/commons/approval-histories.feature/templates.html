@@ -1,0 +1,27 @@
+{{#layout}}
+    <div id="approval-histories-view"></div>
+{{/layout}}
+
+{{#view "approval-histories-view"}}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width: 30px;">#</th>
+                <th style="width: 150px;">评估人</th>
+                <th style="width: 60px;">评估状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each approvalHistorys}}
+            <tr>
+                <td>{{index}}</td>
+                <td>{{name}}</td>
+                <td>{{status}}</td>
+            </tr>
+            {{/each}}
+            <tr>
+                <td colspan="3">{{noApprovalHistory}}</td>
+            </tr>
+        </tbody>
+    </table>
+{{/view}}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <named-query name="getProcessTasksByUserId">
+        <query>
+            select pti from ProcessTaskInfo pti where (pti.isSign = '0' or pti.signor.id = :userId) and (pti.requestNo like :requestNo or pti.processInstance.processDefinition.businessDefinition.businessName like :businessName) and pti.processInstance.isFinished = '0' and pti.isApproval = '0' and (pti.id in(select pt.id from ProcessTaskInfo pt inner join pt.processSettingItem.accounts acs where acs.id = :userId) or pti.id in(select pt.id from ProcessTaskInfo pt inner join pt.processSettingItem.roles rs inner join rs.accounts ras where ras.id = :userId) or pti.id in(select pt.id from ProcessTaskInfo pt inner join pt.processSettingItem.departments ds inner join ds.accounts das where das.id = :userId)) order by pti.createTime desc
+        </query>
+    </named-query>
+
+    <named-query name="getProcessTaskByEntryIdAndProInsIdAndBefFlowStatus">
+        <query>
+            select pti from ProcessTaskInfo pti where pti.processInstance.relatedEntryId = :entryId and pti.processInstance.id = :processInstanceId and pti.flowStatus = :beforeFlowStatus
+        </query>
+    </named-query>
+
+    <named-query name="getProcessTasksByEntryIdAndProInsId">
+        <query>
+            select pti from ProcessTaskInfo pti where pti.processInstance.relatedEntryId = :entryId and pti.processInstance.id = :processInstanceId
+        </query>
+    </named-query>
+
+    <named-query name="getProcessTasksByEntryId">
+        <query>
+            select pti from ProcessTaskInfo pti where pti.processInstance.relatedEntryId = :entryId
+        </query>
+    </named-query>
+</entity-mappings>

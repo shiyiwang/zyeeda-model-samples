@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+
+    <persistence-unit name="default" transaction-type="JTA">
+
+        <!-- 开启 oracle 自动建表必须配置 -->
+        <mapping-file>META-INF/mappings/metadata.orm.xml</mapping-file>
+
+        <!-- 系统 -->
+        <mapping-file>META-INF/mappings/cdeio/validation.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/cdeio/authc.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/sso/openid/realm.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/system/account-department.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/system/account.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/system/notice.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/system/my-notice.orm.xml</mapping-file>
+
+        <!-- 流程 -->
+        <mapping-file>META-INF/mappings/process/businessDefinition.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/process/processDefinition.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/process/processInstance.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/process/processTaskInfo.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/process/processSettingItem.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/process/approvalHistory.orm.xml</mapping-file>
+
+        <!-- 工作包 -->
+        <mapping-file>META-INF/mappings/work/work-package.orm.xml</mapping-file>
+        <mapping-file>META-INF/mappings/work/todo-info.orm.xml</mapping-file>
+
+        <!-- 系统级实体 -->
+        <class>com.zyeeda.cdeio.commons.organization.entity.Account</class>
+        <class>com.zyeeda.cdeio.commons.organization.entity.Department</class>
+        <class>com.zyeeda.cdeio.commons.resource.entity.MenuItem</class>
+        <class>com.zyeeda.cdeio.commons.resource.entity.SettingItem</class>
+        <class>com.zyeeda.cdeio.commons.authc.entity.Permission</class>
+        <class>com.zyeeda.cdeio.commons.authc.entity.Role</class>
+        <class>com.zyeeda.cdeio.commons.resource.entity.Attachment</class>
+
+        <!-- 流程 -->
+        <class>com.zyeeda.model.process.entity.ApprovalHistory</class>
+        <class>com.zyeeda.model.process.entity.BusinessDefinition</class>
+        <class>com.zyeeda.model.process.entity.ProcessDefinition</class>
+        <class>com.zyeeda.model.process.entity.ProcessDomainEntity</class>
+        <class>com.zyeeda.model.process.entity.ProcessInstance</class>
+        <class>com.zyeeda.model.process.entity.ProcessRevisionDomainEntity</class>
+        <class>com.zyeeda.model.process.entity.ProcessSettingItem</class>
+        <class>com.zyeeda.model.process.entity.ProcessTaskInfo</class>
+
+        <!-- 综合 -->
+        <class>com.zyeeda.model.notice.entity.SystemNotice</class>
+
+        <!-- 工作包 -->
+        <class>com.zyeeda.model.work.entity.WorkPackage</class>
+
+        <validation-mode>NONE</validation-mode>
+
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
+
+            <property name="hibernate.transaction.manager_lookup_class"
+                value="org.hibernate.transaction.WeblogicTransactionManagerLookup" />
+
+            <!-- 配置索引文件夹路径 -->
+            <property name="hibernate.search.default.indexBase" value="E:/workspace/project/zyeeda-model-samples/src/main/webapp/WEB-INF/indexes"/>
+
+            <!-- 自动更新索引 -->
+            <property name="hibernate.search.indexing_strategy"  value="event"/>
+            <property name="hibernate.search.autoregister_listeners" value="true"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

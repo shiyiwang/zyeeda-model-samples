@@ -1,0 +1,24 @@
+{{#layout}}
+<div id="inner-header" class="navbar-inner"></div>
+{{/layout}}
+
+{{#view "inner-header"}}
+<div class="container-fluid">
+    <a class="brand" href="javascript:void 0;">
+        <img
+            class="c-system-logo"
+            src="{{#if settings.application-logo}}{{settings.application-logo}}{{else}}assets/images/common/csg-ehv-logo.png{{/if}}"
+            alt="应用程序图标" />
+        <div class="c-system-name">
+        {{#if settings.application-name}}
+            {{settings.application-name}}
+        {{else}}
+            工作包管理小系统
+        {{/if}}
+        </div>
+    </a>
+
+    <ul id="notification" class="nav ace-nav pull-right">
+    </ul>
+</div>
+{{/view}}

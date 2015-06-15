@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<Configure id="wac" class="org.eclipse.jetty.webapp.WebAppContext">
+    <Call name="setInitParameter">
+        <Arg>org.eclipse.jetty.servlet.SessionIdPathParameterName</Arg>
+        <Arg>none</Arg>
+    </Call>
+
+    <Call name="setInitParameter">
+        <Arg>org.eclipse.jetty.servlet.Default.useFileMappedBuffer</Arg>
+        <Arg>false</Arg>
+    </Call>
+
+    <Call name="addAliasCheck">
+        <Arg><New class="org.eclipse.jetty.server.handler.AllowSymLinkAliasChecker"/></Arg>
+    </Call>
+</Configure>

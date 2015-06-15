@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <named-query name="getRecipientNoticeByRecipientId">
+        <query>
+            select sn from SystemNotice sn where sn.id in(select s.id from SystemNotice s inner join s.accounts sas where sas.id = :userId and s.status = '2') or sn.id in(select s.id from SystemNotice s inner join s.departments sd inner join sd.accounts sda where sda.id = :userId and s.status = '2') or sn.id in(select s.id from SystemNotice s inner join s.roles sr inner join sr.accounts sra where sra.id = :userId and s.status = '2') order by sn.createdTime desc
+        </query>
+    </named-query>
+
+</entity-mappings>

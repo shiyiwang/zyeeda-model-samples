@@ -1,0 +1,33 @@
+{{#layout }}
+<div id="container">
+  <div class="row-fluid" id="types"/>
+  <div class="row-fluid" id="content"/>
+</div>
+{{/layout}}
+
+{{#view "types"}}
+<div class="span12">
+  <ul class="nav nav-pills">
+    <!-- <li class="active"><a id="type-*" href="javascript:void 0" data-option-value="*">全部</a></li> -->
+    {{#each types}}
+    <li><a id="type-{{name}}" href="javascript:void 0" data-option-value=".{{name}}">{{text}}</a></li>
+    {{/each}}
+  </ul>
+</div>
+{{/view}}
+
+{{#view "content"}}
+<div class="span12" id="isotope">
+  {{#each videos}}
+  <div class="video-item {{type}}">
+    <!--
+    <a class="video-popup" href="videos/{{name}}.{{ext}}">
+    -->
+    <a class="video-popup" href="invoke/video/play?fileName=../../videos/{{name}}&ext={{ext}}">
+      <img src="videos/{{name}}.png"></img>
+      <div>{{title}}</div>
+    </a>
+  </div>
+  {{/each}}
+</div>
+{{/view}}

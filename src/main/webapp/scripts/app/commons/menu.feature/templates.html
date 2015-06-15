@@ -1,0 +1,42 @@
+{{#layout}}
+<div id="sidebar-shortcuts" class="ace-sidebar-shortcuts"/>
+<div id="center"/>
+<div id="sidebar-collapse" class="ace-sidebar-collapse"/>
+{{/layout}}
+
+{{#view "menu"}}
+<ul class="nav nav-list" id="menu">
+  {{#each data}}
+  {{#if children}}
+  <li>
+	<a href="javascript:void 0;" class="dropdown-toggle" id="parent-{{id}}">
+	  <i class="{{iconClass}}"></i>
+	  <span>{{name}}</span>
+	  <b class="arrow icon-angle-down"></b>
+	</a>
+	<ul class="submenu">
+      {{#each children}}
+	  <li>
+      <a href="{{path}}" id="child-{{id}}" data-id="{{id}}">
+		  <i class="icon-double-angle-right"></i>
+          {{name}}
+		</a>
+	  </li>
+      {{/each}}
+    </ul>
+  </li>
+  {{else}}
+  <li>
+  <a href="{{path}}" id="child-{{id}}" data-id="{{id}}">
+	  <i class="{{iconClass}}"></i>
+	  <span>{{name}}</span>
+	</a>
+  </li>
+  {{/if}}
+  {{/each}}
+</ul><!--/.nav-list-->
+{{/view}}
+
+{{#view "tool"}}
+<i id="btn" class="icon-double-angle-left"></i>
+{{/view}}
