@@ -7,7 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -33,21 +36,23 @@ public class WorkTask extends DomainEntity {
     /**
      * 负责人
      */
-    private Account account;
+    private List<Account> accounts;
 
     /**
      * 工作包
      */
     private WorkPackage workPackage;
 
-    @OneToOne
-    @JoinColumn(name = "F_ACCOUNT_ID")
-    public Account getAccount() {
-        return account;
+    @ManyToMany
+    @JoinTable(name = "MO_WORK_TASK_SET_ACCOUNT",
+        joinColumns = {@JoinColumn(name="F_ACCOUNT_ID")},
+        inverseJoinColumns = {@JoinColumn(name="F_WORK_TASK_ID")})
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     @OneToOne
@@ -59,4 +64,5 @@ public class WorkTask extends DomainEntity {
     public void setWorkPackage(WorkPackage workPackage) {
         this.workPackage = workPackage;
     }
+
 }

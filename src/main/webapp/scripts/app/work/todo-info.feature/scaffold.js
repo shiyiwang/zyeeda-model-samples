@@ -3,6 +3,16 @@ define([
     'cdeio/core/loader-plugin-manager'
 ], function ($, LoaderManager) {
     return {
+        afterShowDialog: function(dialogType, v, data){
+            var me = this;
+            if ('show' === dialogType) {
+                me.feature.model.set('evaluateInfo.expectTime', data.evaluateInfo.expectTime);
+                me.feature.model.set('evaluateInfo.workload', data.evaluateInfo.workload);
+                me.feature.model.set('evaluateInfo.workPrice', data.evaluateInfo.workPrice);
+            }
+
+            me.feature.views['form:' + dialogType].setFormData(me.feature.model.toJSON(), true);
+        },
         renderers: {
             modifyModel: function(data) {
                 var modelMap = {
@@ -14,9 +24,9 @@ define([
             },
             modifyStatus: function(data) {
                 var statusMap = {
-                        '1': '未评估',
-                        '2': '评估中',
-                        '3': '已评估'
+                        '1': '待评估',
+                        '2': '待提交',
+                        '3': '已提交'
                 };
                 return statusMap[data];
             }
@@ -29,6 +39,11 @@ define([
                     view, inputs, formData,
                     grid = me.feature.views['grid:body'].components[0],
                     data = grid.getSelected().toJSON();
+
+                if (data.status !== '1') {
+                    app.error('请选择待评估的记录');
+                    return false;
+                }
 
                 evaluateInfoFeature.done(function (feature) {
                     view = feature.views['form:add'];
@@ -51,7 +66,7 @@ define([
                                     data: formData,
                                     success: function(result){
                                         grid.refresh();
-                                        app.success('评估成功');
+                                        app.success('评估成功！');
                                     }
                                 });
                             }
@@ -71,10 +86,9 @@ define([
                     grid = me.feature.views['grid:body'].components[0],
                     data = grid.getSelected().toJSON();
 
-                console.log(data);
-                if (data.status === '1'){
-                    app.error('请先填写评估信息');
-                    //return false;
+                if (data.status !== '2'){
+                    app.error('请选择待提交的记录!');
+                    return false;
                 }
 
                 me.feature.request({
@@ -83,9 +97,44 @@ define([
                     data: data,
                     success: function(result){
                         grid.refresh();
-                        app.success('提交成功');
+                        app.success('提交成功!');
                     }
                 });
+            },
+            modify: function() {
+                var me = this,
+                    grid = me.feature.views['grid:body'].components[0],
+                    evaluateInfoFeature = app.loadFeature('work/scaffold:evaluate-info', {container: '<div></div>'}),
+                    data = grid.getSelected().toJSON();
+
+                if ('2' !== data.status) {
+                    app.error('请选择状态为待提交的记录！');
+                    return false;
+                }
+
+                evaluateInfoFeature.done(function (feature) {
+                    view = feature.views['form:edit'];
+
+                    app.showDialog({
+                        view: view,
+                        title: '编辑评估信息',
+                        buttons: [{
+                            label: '确定',
+                            status: 'btn-primary',
+                            fn: function () {
+                                view.submit({id: data.evaluateInfo.id}).done(function () {
+                                    grid.refresh();
+                                    app.success('编辑评估成功!');
+                                });
+                            }
+                        }]
+                    }).done(function (dialog) {
+                        $('input[name= "expectTime"]', view.$el).val(data.evaluateInfo.expectTime);
+                        $('input[name= "workPrice"]', view.$el).val(data.evaluateInfo.workPrice);
+                        $('input[name= "workload"]', view.$el).val(data.evaluateInfo.workload);
+                    });
+                });
+                return;
             }
 
         }

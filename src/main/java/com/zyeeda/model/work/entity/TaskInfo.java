@@ -7,12 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.FetchType;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,31 +24,26 @@ import com.zyeeda.cdeio.commons.authc.entity.Role;
 import com.zyeeda.cdeio.commons.organization.entity.Account;
 import com.zyeeda.cdeio.validation.constraint.NullableSize;
 import com.zyeeda.cdeio.commons.base.entity.RevisionDomainEntity;
-import com.zyeeda.model.work.entity.WorkList;
 import com.zyeeda.model.work.entity.WorkPackage;
+import com.zyeeda.model.work.entity.TaskList;
 
 /**
- * 评估信息
+ * 任务信息
  *
  * $Author$
  */
 @Entity
-@Table(name = "MO_WORK_EVALUATE_INFO")
-@Scaffold("/work/evaluate-info")
-public class EvaluateInfo extends RevisionDomainEntity {
+@Table(name = "MO_WORK_TASK_INFO")
+@Scaffold("/work/task-info")
+public class TaskInfo extends RevisionDomainEntity {
 
     /**
-     * 评估状态（1:未完成，2：已完成）
-     */
-    private String status;
-
-    /**
-     * 评估用户
+     * 负责人
      */
     private Account account;
 
     /**
-     * 评估用户姓名
+     * 负责人姓名
      */
     private String accountName;
 
@@ -56,34 +53,14 @@ public class EvaluateInfo extends RevisionDomainEntity {
     private WorkPackage workPackage;
 
     /**
-     * 估算完成时间
+     * 整体进度
      */
-    private Date expectTime;
+    private String totalProgress;
 
     /**
-     * 估算工作量（人天）
+     * 进度清单
      */
-    private String workload;
-
-    /**
-     * 估算价值
-     */
-    private String workPrice;
-
-    /**
-     * 详细清单
-     */
-    private List<WorkList> workLists;
-
-    @Column(name = "F_STATUS", length = 300)
-    @NullableSize(max = 166)
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private List<TaskList> taskLists;
 
     @ManyToOne
     @JoinColumn(name = "F_ACCOUNT_ID")
@@ -95,7 +72,7 @@ public class EvaluateInfo extends RevisionDomainEntity {
         this.account = account;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "F_WORK_PACKAGE_ID")
     public WorkPackage getWorkPackage() {
         return workPackage;
@@ -105,34 +82,13 @@ public class EvaluateInfo extends RevisionDomainEntity {
         this.workPackage = workPackage;
     }
 
-    @NotNull
-    @Column(name = "F_EXPECT_TIME")
-    @Temporal(TemporalType.DATE)
-    public Date getExpectTime() {
-        return expectTime;
+    @Column(name = "F_TOTAL_PROGRESS", length = 300)
+    public String getTotalProgress() {
+        return totalProgress;
     }
 
-    public void setExpectTime(Date expectTime) {
-        this.expectTime = expectTime;
-    }
-
-    @NotNull
-    @Column(name = "F_WORKLOAD", length = 300)
-    public String getWorkload() {
-        return workload;
-    }
-
-    public void setWorkload(String workload) {
-        this.workload = workload;
-    }
-
-    @OneToMany(mappedBy = "evaluateInfo")
-    public List<WorkList> getWorkLists() {
-        return workLists;
-    }
-
-    public void setWorkLists(List<WorkList> workLists) {
-        this.workLists = workLists;
+    public void setTotalProgress(String totalProgress) {
+        this.totalProgress = totalProgress;
     }
 
     @Column(name = "F_ACCOUNT_NAME", length = 300)
@@ -144,14 +100,13 @@ public class EvaluateInfo extends RevisionDomainEntity {
         this.accountName = accountName;
     }
 
-    @NotNull
-    @Column(name = "F_WORK_PRICE", length = 300)
-    @NullableSize(max = 166)
-    public String getWorkPrice() {
-        return workPrice;
+    @OneToMany(mappedBy = "taskInfo", fetch = FetchType.LAZY)
+    public List<TaskList> getTaskLists() {
+        return taskLists;
     }
 
-    public void setWorkPrice(String workPrice) {
-        this.workPrice = workPrice;
+    public void setTaskLists(List<TaskList> taskLists) {
+        this.taskLists = taskLists;
     }
+
 }

@@ -1,0 +1,27 @@
+{{#layout}}
+    <div id="evaluate-info-view"></div>
+{{/layout}}
+
+{{#view "evaluate-info-view"}}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width: 30px;">#</th>
+                <th style="width: 150px;">评估人</th>
+                <th style="width: 60px;">评估状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each evaluateInfos}}
+            <tr>
+                <td>{{index}}</td>
+                <td>{{name}}</td>
+                <td>{{status}}</td>
+            </tr>
+            {{/each}}
+            <tr>
+                <td colspan="3">{{noEvaluateInfo}}</td>
+            </tr>
+        </tbody>
+    </table>
+{{/view}}

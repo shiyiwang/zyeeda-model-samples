@@ -1,5 +1,5 @@
 (function() {
-    define(['jquery', 'underscore', 'app/commons/approval-histories.feature/approval-histories-function'], function ($, _, approvalHistoriesUtil) {
+    define(['jquery', 'underscore', 'app/commons/show-evaluate-info.feature/approval-histories-function'], function ($, _, showEvaluateInfoUtil) {
         return {
             afterShowAuditDialog: function(view) {
                 var inputs, textareas;

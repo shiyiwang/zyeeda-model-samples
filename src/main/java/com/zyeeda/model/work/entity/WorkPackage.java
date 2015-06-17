@@ -23,6 +23,7 @@ import com.zyeeda.cdeio.validation.constraint.NullableSize;
 import com.zyeeda.model.work.entity.WorkEvaluate;
 import com.zyeeda.model.work.entity.EvaluateInfo;
 import com.zyeeda.model.work.entity.TodoInfo;
+import com.zyeeda.model.work.entity.TaskInfo;
 
 /**
  * 工作包
@@ -92,7 +93,7 @@ public class WorkPackage extends RevisionDomainEntity {
     /**
     *  负责人
     */
-    private WorkTask workTask;
+    private List<TaskInfo> taskInfos;
 
     @NullableSize(max = 166)
     @Column(name = "F_CODE", length = 100)
@@ -210,13 +211,13 @@ public class WorkPackage extends RevisionDomainEntity {
         this.status = status;
     }
 
-    @OneToOne(mappedBy = "workPackage")
-    public WorkTask getWorkTask() {
-        return workTask;
+    @OneToMany(mappedBy = "workPackage")
+    public List<TaskInfo> getTaskInfos() {
+        return taskInfos;
     }
 
-    public void setWorkTask(WorkTask workTask) {
-        this.workTask = workTask;
+    public void setTaskInfos(List<TaskInfo> taskInfos) {
+        this.taskInfos = taskInfos;
     }
 
 }

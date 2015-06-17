@@ -19,8 +19,7 @@ exports.labels = {
     postWorkPackage: '后置工作包',
     content: '工作包研究内容',
     accStandard: '工作包验收标准',
-    status: '状态',
-    'workTask.account.accountName': '负责人'
+    status: '状态'
 };
 
 exports.filters = {
@@ -30,7 +29,8 @@ exports.filters = {
         '!todoInfoFilter': ['workPackage'],
         '!workListFilter': 'evaluateInfo',
         '!accountFilter': ['department', 'roles'],
-        '!workTaskFilter': ['workPackage']
+        '!taskInfoFilter': ['workPackage'],
+        '!taskListFilter': ['taskInfo']
     },
     list: {
         '!workPackageFilter': ['preWorkPackage', 'postWorkPackage', 'workEvaluate'],
@@ -38,7 +38,8 @@ exports.filters = {
         '!todoInfoFilter': ['workPackage'],
         '!workListFilter': 'evaluateInfo',
         '!accountFilter': ['department', 'roles'],
-        '!workTaskFilter': ['workPackage']
+        '!taskInfoFilter': ['workPackage'],
+        '!taskListFilter': ['taskInfo']
     }
 };
 
@@ -114,9 +115,17 @@ exports.fieldGroups = {
     evaluateInfoGroup: [
         {label: '评估记录', type: 'inline-grid', name: 'evaluateInfos', readOnly: true, hideLabel: true}
     ],
-    workTaskGroup: [
-        'workTask.account.accountName'
-    ]
+    inlineTaskInfosGrid: [{
+        label: '负责人',
+        type: 'inline-grid',
+        name: 'taskInfos',
+        allowAdd: false,
+        allowEdit: false,
+        multiple: true,
+        allowPick: true,
+        readOnly: true,
+        hideLabel: true
+    }]
 };
 
 exports.forms = {
@@ -141,14 +150,14 @@ exports.forms = {
         groups: [
             {name: 'edit', columns: 2},
             {name: 'evaluateInfoGroup'},
-            {name: 'workTaskGroup'},
+            {name: 'inlineTaskInfosGrid'},
             {name: 'inlinePreWorkListGrid'},
             {name: 'inlinePostWorkListGrid'}
         ],
         tabs: [
             {title: '工作包', groups: ['edit', 'inlinePreWorkListGrid', 'inlinePostWorkListGrid']},
             {title: '评估信息', groups: ['evaluateInfoGroup']},
-            {title: '负责人', groups: ['workTaskGroup']}
+            {title: '负责人', groups: ['inlineTaskInfosGrid']}
         ]
     },
     filter: {
@@ -164,7 +173,7 @@ exports.picker = {
             { name: 'code', header: '工作包编号', search: false, filter: 'text', defaultContent: '' },
             { name: 'name', header: '工作包名称', search: false, filter: 'text', defaultContent: ''},
             { name: 'endTime', header: '截止时间', search: false, filter: 'text' , defaultContent: ''},
-            { name: 'model', header: '所属功能模块', search: true, filter: 'text', defaultContent: ''},
+            { name: 'model', header: '所属功能模块', search: true, filter: 'text', defaultContent: '', renderer: 'modifyModel'},
             { name: 'content', header: '工作包研究内容', search: true, filter: 'text', defaultContent: ''}
         ]
     }
@@ -192,6 +201,9 @@ exports.hooks = {
             workPackage.creator = user.accountName;
             workPackage.creatorName = user.realName;
             workPackage.createdTime = new Date();
+            workPackage.lastModifier = user.accountName;
+            workPackage.lastModifierName = user.realName;
+            workPackage.lastModifiedTime = new Date();
             workPackage.status = '1';
             //自动生成编号
             workPackage.code = workPackageSvc.autoGenerateNo();

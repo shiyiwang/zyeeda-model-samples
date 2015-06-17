@@ -24,6 +24,7 @@ import com.zyeeda.cdeio.commons.organization.entity.Account;
 import com.zyeeda.cdeio.validation.constraint.NullableSize;
 import com.zyeeda.cdeio.commons.base.entity.RevisionDomainEntity;
 import com.zyeeda.model.work.entity.WorkPackage;
+import com.zyeeda.model.work.entity.EvaluateInfo;
 
 /**
  * 提交评估
@@ -74,6 +75,11 @@ public class TodoInfo extends RevisionDomainEntity {
      * 工作包所属功能模块
      */
     private String packageModel;
+
+    /**
+     * 评估信息
+     */
+    private EvaluateInfo evaluateInfo;
 
     @Column(name = "F_STATUS", length = 300)
     @NotBlank
@@ -152,5 +158,15 @@ public class TodoInfo extends RevisionDomainEntity {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "F_EVALUATE_INFO_ID")
+    public EvaluateInfo getEvaluateInfo() {
+        return evaluateInfo;
+    }
+
+    public void setEvaluateInfo(EvaluateInfo evaluateInfo) {
+        this.evaluateInfo = evaluateInfo;
     }
 }

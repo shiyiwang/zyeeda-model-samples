@@ -1,12 +1,13 @@
 define([
     'jquery',
     'cdeio/core/loader-plugin-manager',
-    'app/process/approval-history.feature/approval-history-function'
-], function ($, LoaderManager, apprHisFuncUtil) {
+    'app/commons/show-evaluate-info.feature/show-evaluate-info-function',
+    'app/commons/show-task-info.feature/show-task-info-function'
+], function ($, LoaderManager, showEvaluateInfoUtil, showTaskInfoUtil) {
     return {
         beforeShowDialog: function(dialogType, v){
             var me = this;
-            //打开编辑页面前验证状态是否为初始或退回
+            //打开编辑页面前验证
             if('edit' === dialogType){
                 var grid = me.feature.views['grid:body'].components[0],
                     data = grid.getSelected().toJSON();
@@ -16,6 +17,7 @@ define([
                     return false;
                 }
             }
+
             return true;
         },
         afterShowDialog: function(dialogType, v, data){
@@ -28,12 +30,12 @@ define([
 
                 for (key in data.todoInfos){
                     todoInfo = data.todoInfos[key];
-                    if (todoInfo.status == '1'){
+                    if (todoInfo.status !== '3'){
                         allPass = false;
                     }
                 }
 
-                if (null == data.evaluateInfos || data.evaluateInfos.length == 0 || allPass == false) {
+                if (null == data.evaluateInfos || data.evaluateInfos.length === 0 || allPass == false) {
                     tabs = v.options.tabs || [];
                     $.each(tabs, function(i, vv) {
                         if ("评估信息" === vv.title){
@@ -41,10 +43,7 @@ define([
                         }
                     });
                 }
-
-                if (data.workTask !== null){
-                    me.feature.model.set('workTask.account.accountName', data.workTask.account.accountName);
-                }else {
+                if (null == data.taskInfos || data.taskInfos.length === 0) {
                     tabs = v.options.tabs || [];
                     $.each(tabs, function(i, vv) {
                         if ("负责人" === vv.title){
@@ -53,7 +52,7 @@ define([
                     });
                 }
             }
-            me.feature.views['form:' + dialogType].setFormData(me.feature.model.toJSON(), true);
+            // me.feature.views['form:' + dialogType].setFormData(me.feature.model.toJSON(), true);
         },
         renderers: {
             modifyPackageName: function(data) {
@@ -71,10 +70,46 @@ define([
                 return modelMap[data];
             },
             modifyStatus: function(data, param, gridData){
-                return apprHisFuncUtil.showApprovalHistories(this, data, param, gridData);
+                var showEvaluateInfo, showTaskInfo, flowStatusMap, id, me = this;
+
+                showEvaluateInfo = function(id){
+                    showEvaluateInfoUtil.showEvaluateInfo(me, id);
+                };
+                showTaskInfo = function(id){
+                    showTaskInfoUtil.showTaskInfo(me, id);
+                };
+                window.showEvaluateInfo = showEvaluateInfo;
+                window.showTaskInfo = showTaskInfo;
+
+                evaluateHtml = '<a href="javascript:void(0)" onclick="showEvaluateInfo(\'' + gridData.id + '\');"> ';
+                taskHtml = '<a href="javascript:void(0)" onclick="showTaskInfo(\'' + gridData.id + '\');"> ';
+
+                flowStatusMap = {
+                    '1': '未评估',
+                    '2': evaluateHtml + '评估中</a>',
+                    '3': evaluateHtml + '已评估</a>',
+                    '4': taskHtml + '已分配</a>'
+                };
+
+                return flowStatusMap[data];
+            }
+        },
+        inlineGridPickerRenderers: {
+            modifyModel: function(data) {
+                var modelMap = {
+                        '1' : '模块1',
+                        '2' : '模块2',
+                        '3' : '模块3'
+                    };
+                return modelMap[data];
             }
         },
         handlers: {
+            accountPickerCallback: function(v, data){
+                console.log('into picker call back');
+                //进入编辑界面，初始化 picker 数据后赋值
+                $('input[name="account.accountName"]', v.$el).val(data.accountName);
+            },
             evaluate: function(){
                 var me = this,
                     id,
@@ -113,13 +148,18 @@ define([
                             }
                         }]
                     }).done(function (dialog) {
+                        var modelMap = {
+                            '1' : '模块1',
+                            '2' : '模块2',
+                            '3' : '模块3'
+                        };
                         $('input[name= "workPackage.code"]', view.$el).val(data.code);
                         $('input[name= "workPackage.code"]', view.$el).attr('disabled', true);
                         $('input[name= "workPackage.name"]', view.$el).val(data.name);
                         $('input[name= "workPackage.name"]', view.$el).attr('disabled', true);
                         $('input[name= "workPackage.endTime"]', view.$el).val(data.endTime);
                         $('input[name= "workPackage.endTime"]', view.$el).attr('disabled', true);
-                        $('input[name= "workPackage.model"]', view.$el).val(data.model);
+                        $('input[name= "workPackage.model"]', view.$el).val(modelMap[data.model]);
                         $('input[name= "workPackage.model"]', view.$el).attr('disabled', true);
                     });
                 });
@@ -150,7 +190,6 @@ define([
                             fn: function() {
                                 formData = view.getFormData();
                                 formData.workPackageId = data.id;
-                                formData.accountId = formData.account.id;
                                 feature.request({
                                     url: 'task-person',
                                     type: 'post',
@@ -170,7 +209,6 @@ define([
                     });
                 });
             }
-
         }
     };
 });

@@ -382,12 +382,28 @@ router.get('/get-system-home-data', mark('services', 'common-routers').on(functi
 router.get('/get-todo-info-by-work-package-id', mark('services', 'common-routers').on(function (commSvc, request) {
     var entryId = request.params.selectedDataId, results = [], todoInfos;
 
-    todoInfos = commSvc.getTodoInfoByWorkPackageId(entryId);
+    todoInfos = commSvc.getTodoInfosByWorkPackageId(entryId);
 
     if (todoInfos.size() !== 0){
         for (var i = 0; i < todoInfos.size(); i++) {
             var todoInfo = todoInfos.get(i);
             results.push({index: i + 1, name: todoInfo.account.accountName, status: todoInfo.status});
+        }
+    }
+
+    return json({results: results});
+}));
+
+// 获取todoInfo数据
+router.get('/get-task-info-by-work-package-id', mark('services', 'common-routers').on(function (commSvc, request) {
+    var entryId = request.params.selectedDataId, results = [], taskInfo, taskInfos, i;
+
+    taskInfos = commSvc.getTaskInfosByWorkPackageId(entryId);
+
+    if (taskInfos.size() !== 0){
+        for (i = 0; i < taskInfos.size(); i++) {
+            taskInfo = taskInfos.get(i);
+            results.push({index: i + 1, name: taskInfo.account.accountName, progress: taskInfo.totalProgress});
         }
     }
 

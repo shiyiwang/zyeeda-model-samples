@@ -53,15 +53,6 @@ exports.fieldGroups = {
     defaults: [
         'expectTime', 'workload', 'workPrice'
     ]
-    // inlineWorkListGrid: [{
-    //     label: '活动清单',
-    //     type: 'inline-grid',
-    //     name: 'workLists',
-    //     allowAdd: true,
-    //     allowEdit: true,
-    //     multiple: false,
-    //     allowPick: false
-    // }]
 };
 
 exports.forms = {

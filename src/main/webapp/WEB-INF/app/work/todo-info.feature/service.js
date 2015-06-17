@@ -3,7 +3,7 @@ var {createService}     = require('cdeio/service');
 var {createManager}     = require('cdeio/manager');
 
 var {TodoInfo}           = com.zyeeda.model.work.entity;
-// var {Account}            = com.zyeeda.cdeio.commons.organization.entity;
+var {WorkPackage}        = com.zyeeda.model.work.entity;
 
 var {EntityMetaResolver} = com.zyeeda.cdeio.web.scaffold;
 var {SecurityUtils}      = org.apache.shiro;
@@ -28,13 +28,25 @@ exports.createService = function() {
 
             return fetchResult;
         }),
-        submitTodoInfo: mark('managers', TodoInfo).mark('tx').on(function (infoMgr, data) {
-            var toDoInfo;
+        submitTodoInfo: mark('managers', TodoInfo, WorkPackage).mark('tx').on(function (infoMgr, workPackageMgr, data) {
+            var todoInfo, todo, workPackage, allPass = true;
 
-            toDoInfo = infoMgr.find(data.id);
-            toDoInfo.status = '3';
+            todoInfo = infoMgr.find(data.id);
+            todoInfo.status = '3';
 
-            return toDoInfo;
+            workPackage = workPackageMgr.find(data.workPackage.id);
+
+            for (var i = 0; i < workPackage.todoInfos.size(); i++) {
+                todo = workPackage.todoInfos.get(i);
+                if (todo.status == '1'){
+                    allPass = false;
+                }
+            }
+            if (allPass == true){
+                workPackage.status = '3';
+            }
+
+            return todoInfo;
         })
     };
 };

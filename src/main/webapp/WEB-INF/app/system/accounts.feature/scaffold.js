@@ -1,13 +1,18 @@
-var _ = require('underscore');
-var logger = require('ringo/logging').getLogger(module.id);
+var _               = require('underscore');
+var logger          = require('ringo/logging').getLogger(module.id);
 var {SecurityUtils} = org.apache.shiro;
 
 var {json, error, html} = require('cdeio/response');
-var {mark} = require('cdeio/mark');
+var {mark}              = require('cdeio/mark');
 
-var {BCrypt} = com.zyeeda.cdeio.commons.crypto;
+var {BCrypt}          = com.zyeeda.cdeio.commons.crypto;
 var {Account, Gender} = com.zyeeda.cdeio.commons.organization.entity;
-var {Update} = com.zyeeda.cdeio.validation.group;
+var {Update}          = com.zyeeda.cdeio.validation.group;
+var {createService}   = require('system/accounts.feature/service');
+
+exports.service = function(service){
+    return _.extend(service, createService());
+};
 
 exports.filters = {
     defaults: {

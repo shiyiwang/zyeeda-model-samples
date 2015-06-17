@@ -1,6 +1,7 @@
 var {mark}                    = require('cdeio/mark');
 var {createValidationContext} = require('cdeio/validation/validation-context');
 var logger                    = require('ringo/logging').getLogger(module.id);
+var {createManager}     = require('cdeio/manager');
 
 var {BCrypt}           = com.zyeeda.cdeio.commons.crypto;
 var {Account}          = com.zyeeda.cdeio.commons.organization.entity;
@@ -10,9 +11,34 @@ var {AccountExtension} = com.zyeeda.model.system.entity;
 
 var {SecurityUtils}    = org.apache.shiro;
 
+var {EntityMetaResolver} = com.zyeeda.cdeio.web.scaffold;
+
 exports.createService = function() {
 
     var service = {
+        list: mark('beans', EntityMetaResolver).mark('managers').mark('tx').on(function (resolver, entity, options) {
+            var meta = resolver.resolveEntity(Account),
+                todoInfoMgr = createManager(meta.entityClass),
+                currentUser = SecurityUtils.getSubject().getPrincipal();
+
+            options.filters = options.filters || [];
+
+            if ('picker' === options.listType){
+                if ('work-evaluate' === options.pickerFeatureName){
+                    options.filters.push(['eq', 'roles.name', '工作包负责人']);
+                }else if ('work-task' === options.pickerFeatureName){
+                    options.filters.push(['eq', 'roles.name', '项目负责人']);
+                }
+            }
+
+            if (options.filters) {
+                fetchResult = todoInfoMgr.findByEntity(options);
+            } else {
+                fetchResult = todoInfoMgr.findByExample(entity, options);
+            }
+
+            return fetchResult;
+        }),
 
     	hashPassword: mark('tx').on(function (account) {
     		var hashed = BCrypt.hashpw(account.password, BCrypt.gensalt());

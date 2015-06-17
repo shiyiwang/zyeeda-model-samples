@@ -8,6 +8,7 @@ E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\work\ent
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\process\entity\ProcessDefinition.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\commons\entity\MERevisionDomainEntity.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\commons\entity\METreeNodeRevisionDomainEntity.java
+E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\work\entity\TaskInfo.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\process\entity\ProcessInstance.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\process\entity\ProcessSettingItem.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\work\entity\WorkEvaluate.java
@@ -20,3 +21,4 @@ E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\process\
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\process\entity\ProcessTaskInfo.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\authc\SecurityRealm.java
 E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\commons\entity\METreeNodeDomainEntity.java
+E:\zyeeda-workspace\zyeeda-model-samples\src\main\java\com\zyeeda\model\work\entity\TaskList.java

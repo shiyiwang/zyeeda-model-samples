@@ -18,7 +18,11 @@ exports.labels = {
     packageName: '工作包名称',
     packageEndTime: '截止时间',
     packageModel: '所属模块',
-    status: '状态'
+    status: '状态',
+    evaluateInfo: '评估信息',
+    'evaluateInfo.expectTime': '估算完成时间',
+    'evaluateInfo.workload': '估算工作量(人天)',
+    'evaluateInfo.workPrice': '估算价值(元)'
 };
 
 exports.style = 'grid';
@@ -28,7 +32,8 @@ exports.grid = {
         {name: 'packageCode', defaultContent: '',width: 120},
         {name: 'packageName', defaultContent: '', width: 80},
         {name: 'packageEndTime', defaultContent: '', width: 100},
-        {name: 'packageModel', defaultContent: '', width: 100}
+        {name: 'packageModel', defaultContent: '', width: 100, renderer: 'modifyModel'},
+        {name: 'status', defaultContent: '', width: 50, renderer: 'modifyStatus'}
     ],
     defaultOrder: 'createdTime-desc'
 };
@@ -36,19 +41,22 @@ exports.grid = {
 exports.filters = {
     defaults: {
         '!todoInfoFilter': '',
-        '!workPackageFilter': ['evaluateInfos', 'todoInfos', 'workTask'],
-        '!accountFilter': ['department', 'roles']
+        '!workPackageFilter': ['evaluateInfos', 'todoInfos', 'taskInfos', 'preWorkPackage', 'postWorkPackage'],
+        '!accountFilter': ['department', 'roles'],
+        '!evaluateInfoFilter': ['workPackage', 'workLists']
     },
     list: {
         '!todoInfoFilter': '',
-        '!workPackageFilter': ['evaluateInfos', 'todoInfos', 'workTask'],
-        '!accountFilter': ['department', 'roles']
+        '!workPackageFilter': ['evaluateInfos', 'todoInfos', 'taskInfos', 'preWorkPackage', 'postWorkPackage'],
+        '!accountFilter': ['department', 'roles'],
+        '!evaluateInfoFilter': ['workPackage', 'workLists']
     }
 };
 
 exports.fieldGroups = {
     defaults: [
-        'packageCode', 'packageName', 'packageEndTime', 'packageModel'
+        'packageCode', 'packageName', 'packageEndTime', 'packageModel', 'evaluateInfo.expectTime',
+        'evaluateInfo.workload', 'evaluateInfo.workPrice'
     ]
 };
 
@@ -63,22 +71,14 @@ exports.forms = {
 
 exports.operators = {
     add: false,
-    show: false,
     edit: false,
     del: false,
     evaluate: {label: '评估', style: 'btn-primary', icon: 'icon-file-alt', show: 'single-selected', group: '10-other'},
-    submit: {label: '提交', style: 'btn-pink', icon: 'icon-cloud-upload', show: 'single-selected', group: '20-other'}
+    submit: {label: '提交', style: 'btn-pink', icon: 'icon-cloud-upload', show: 'single-selected', group: '30-other'},
+    modify: {label: '编辑', icon: 'icon-edit', group: '20-selected', style: 'btn-warning', show: 'single-selected', order: 200}
 };
 
 exports.doWithRouter = function(router) {
-    router.post('/get-todo-info-by-work-package-id', mark('services', 'work/work-evaluate').on(function (evaluateSvc, request) {
-        var data = request.params;
-
-        evaluateSvc.saveEvaluate(data);
-
-        return json({flag: true});
-    }));
-
     router.post('/submit-todo', mark('services', 'work/todo-info').on(function (todoInfoSvc, request) {
         var data = request.params;
 

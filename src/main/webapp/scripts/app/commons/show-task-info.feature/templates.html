@@ -1,0 +1,27 @@
+{{#layout}}
+    <div id="show-task-info-view"></div>
+{{/layout}}
+
+{{#view "show-task-info-view"}}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th style="width: 30px;">#</th>
+                <th style="width: 150px;">负责人</th>
+                <th style="width: 60px;">进度</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each taskInfos}}
+            <tr>
+                <td>{{index}}</td>
+                <td>{{name}}</td>
+                <td>{{progress}}</td>
+            </tr>
+            {{/each}}
+            <tr>
+                <td colspan="3">{{noTaskInfo}}</td>
+            </tr>
+        </tbody>
+    </table>
+{{/view}}

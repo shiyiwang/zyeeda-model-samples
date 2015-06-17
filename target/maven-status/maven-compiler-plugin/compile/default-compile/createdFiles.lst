@@ -5,6 +5,7 @@ com\zyeeda\model\commons\entity\MERevisionDomainEntity.class
 com\zyeeda\model\work\entity\WorkTask.class
 com\zyeeda\model\system\entity\AccountExtension.class
 com\zyeeda\model\work\entity\EvaluateInfo.class
+com\zyeeda\model\work\entity\TaskInfo.class
 com\zyeeda\model\process\entity\ProcessSettingItem.class
 com\zyeeda\model\work\entity\WorkList.class
 com\zyeeda\model\process\entity\BusinessDefinition.class
@@ -14,6 +15,7 @@ com\zyeeda\model\work\entity\WorkPackage.class
 com\zyeeda\model\commons\entity\METreeNodeDomainEntity.class
 com\zyeeda\model\process\entity\ProcessInstance.class
 com\zyeeda\model\process\entity\ProcessTaskInfo.class
+com\zyeeda\model\work\entity\TaskList.class
 com\zyeeda\model\process\entity\ProcessDomainEntity.class
 com\zyeeda\model\commons\entity\METreeNodeRevisionDomainEntity.class
 com\zyeeda\model\authc\SecurityRealm.class
