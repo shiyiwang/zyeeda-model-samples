@@ -149,14 +149,14 @@ exports.forms = {
         size: 'large',
         groups: [
             {name: 'edit', columns: 2},
-            {name: 'evaluateInfoGroup'},
+            //{name: 'evaluateInfoGroup'},
             {name: 'inlineTaskInfosGrid'},
             {name: 'inlinePreWorkListGrid'},
             {name: 'inlinePostWorkListGrid'}
         ],
         tabs: [
             {title: '工作包', groups: ['edit', 'inlinePreWorkListGrid', 'inlinePostWorkListGrid']},
-            {title: '评估信息', groups: ['evaluateInfoGroup']},
+            //{title: '评估信息', groups: ['evaluateInfoGroup']},
             {title: '负责人', groups: ['inlineTaskInfosGrid']}
         ]
     },
@@ -181,13 +181,16 @@ exports.picker = {
 
 exports['inline-grid'] = {
     columns: [
-        'code', 'name', 'endTime', 'model', 'status'
+        'code', 'name', 'endTime',
+        {name: 'model', header: '所属功能模块', defaultContent: '', renderer: 'modifyModel'},
+        {name: 'status', header: '状态', defaultContent: '', renderer: 'modifyStatus'}
     ]
 };
 
 exports.operators = {
     evaluate: { label: '送交评估', icon: 'icon-envelope-alt', group: '30-refresh', order: 10, show: 'single-selected', style: 'btn-pink' },
-    task: { label: '分配负责人', icon: 'icon-hand-right', group: '30-refresh', order: 20, show: 'single-selected', style: 'btn-green' }
+    task: { label: '分配负责人', icon: 'icon-hand-right', group: '30-refresh', order: 30, show: 'single-selected', style: 'btn-green' },
+    showEvaluateList: { label: '查看评估信息', icon: 'icon-file-text-alt', group: '30-refresh', order: 20, show: 'single-selected', style: 'btn-success' }
 };
 
 //相关数据处理

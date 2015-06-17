@@ -73,8 +73,8 @@ exports.operators = {
     add: false,
     edit: false,
     del: false,
-    evaluate: {label: '评估', style: 'btn-primary', icon: 'icon-file-alt', show: 'single-selected', group: '10-other'},
-    submit: {label: '提交', style: 'btn-pink', icon: 'icon-cloud-upload', show: 'single-selected', group: '30-other'},
+    evaluate: {label: '评估', style: 'btn-primary', icon: 'icon-file-alt', show: 'single-selected', group: '30-other', order: 100},
+    submit: {label: '提交', style: 'btn-pink', icon: 'icon-cloud-upload', show: 'single-selected', group: '30-other', order: 200},
     modify: {label: '编辑', icon: 'icon-edit', group: '20-selected', style: 'btn-warning', show: 'single-selected', order: 200}
 };
 

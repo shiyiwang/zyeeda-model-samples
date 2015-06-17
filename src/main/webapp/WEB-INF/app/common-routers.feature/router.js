@@ -409,3 +409,19 @@ router.get('/get-task-info-by-work-package-id', mark('services', 'common-routers
 
     return json({results: results});
 }));
+
+// 获取evaluateList数据
+router.get('/get-evaluate-list-by-work-package-id', mark('services', 'common-routers').on(function (commSvc, request) {
+    var entryId = request.params.selectedDataId, results = [], evaluateList, evaluateLists, i;
+
+    evaluateLists = commSvc.getEvaluateListsByWorkPackageId(entryId);
+
+    if (evaluateLists.size() !== 0){
+        for (i = 0; i < evaluateLists.size(); i++) {
+            evaluateList = evaluateLists.get(i);
+            results.push({index: i + 1, name: evaluateList.account.accountName, expectTime: evaluateList.expectTime, workload: evaluateList.workload, workPrice: evaluateList.workPrice});
+        }
+    }
+
+    return json({results: results});
+}));

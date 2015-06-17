@@ -84,7 +84,7 @@ public class TaskInfo extends RevisionDomainEntity {
 
     @Column(name = "F_TOTAL_PROGRESS", length = 300)
     public String getTotalProgress() {
-        return totalProgress;
+        return totalProgress == null ? "0" : totalProgress;
     }
 
     public void setTotalProgress(String totalProgress) {

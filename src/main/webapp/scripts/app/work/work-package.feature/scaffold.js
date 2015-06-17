@@ -13,7 +13,7 @@ define([
                     data = grid.getSelected().toJSON();
                 //状态（1：未评估，2：评估中，3：已评估，4：已分配）
                 if(data.status && '1' !== data.status) {
-                    app.error('请选择状态为未评估的记录');
+                    app.error('请选择状态为未评估的记录！');
                     return false;
                 }
             }
@@ -28,31 +28,30 @@ define([
             }else if ('show' === dialogType) {
                 var todoInfo = null, key, allPass = true;
 
-                for (key in data.todoInfos){
-                    todoInfo = data.todoInfos[key];
-                    if (todoInfo.status !== '3'){
-                        allPass = false;
-                    }
-                }
+                // for (key in data.todoInfos){
+                //     todoInfo = data.todoInfos[key];
+                //     if (todoInfo.status !== '3'){
+                //         allPass = false;
+                //     }
+                // }
 
-                if (null == data.evaluateInfos || data.evaluateInfos.length === 0 || allPass == false) {
-                    tabs = v.options.tabs || [];
-                    $.each(tabs, function(i, vv) {
-                        if ("评估信息" === vv.title){
-                            v.$(vv.id).html('没有相关数据');
-                        }
-                    });
-                }
+                // if (null == data.evaluateInfos || data.evaluateInfos.length === 0 || allPass == false) {
+                //     tabs = v.options.tabs || [];
+                //     $.each(tabs, function(i, vv) {
+                //         if ("评估信息" === vv.title){
+                //             v.$(vv.id).html('没有相关数据');
+                //         }
+                //     });
+                // }
                 if (null == data.taskInfos || data.taskInfos.length === 0) {
                     tabs = v.options.tabs || [];
                     $.each(tabs, function(i, vv) {
                         if ("负责人" === vv.title){
-                            v.$(vv.id).html('没有相关数据');
+                            v.$(vv.id).html('没有相关数据！');
                         }
                     });
                 }
             }
-            // me.feature.views['form:' + dialogType].setFormData(me.feature.model.toJSON(), true);
         },
         renderers: {
             modifyPackageName: function(data) {
@@ -142,7 +141,7 @@ define([
                                     data: formData,
                                     success: function(result){
                                         grid.refresh();
-                                        app.success('送交评估成功');
+                                        app.success('送交评估成功！');
                                     }
                                 });
                             }
@@ -174,7 +173,7 @@ define([
 
                 // 不可重复送交
                 if(data.status !== '3'){
-                    app.error('请选择状态为已评估的记录！！！');
+                    app.error('请选择状态为已评估的记录！');
                     return false;
                 }
 
@@ -206,6 +205,32 @@ define([
                         $('input[name= "workPackage.code"]', view.$el).attr('disabled', true);
                         $('input[name= "workPackage.name"]', view.$el).val(data.name);
                         $('input[name= "workPackage.name"]', view.$el).attr('disabled', true);
+                    });
+                });
+            },
+            showEvaluateList: function() {
+                var me = this,
+                    id,
+                    evaluateListFeature = app.loadFeature('commons/show-evaluate-list', {container: '<div></div>', ignoreExists: true}),
+                    evaluateListView, inputs, formData,
+                    grid = me.feature.views['grid:body'].components[0],
+                    data = grid.getSelected().toJSON();
+
+                if(data.status === '1'){
+                    app.error('请选择状态为评估中、已评估或已分配的记录！');
+                    return false;
+                }
+
+                app.selectedDataId = data.id;
+                evaluateListFeature.done(function (feature) {
+                    evaluateListView = feature.views['evaluate-list-view'];
+                    app.showDialog({
+                        view: evaluateListView,
+                        title: '查看评估信息',
+                        onClose: function() {
+                            feature.stop();
+                        },
+                        buttons: []
                     });
                 });
             }

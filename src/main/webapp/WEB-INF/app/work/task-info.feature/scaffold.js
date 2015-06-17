@@ -92,7 +92,5 @@ exports['inline-grid'] = {
 exports.operators = {
     add: false,
     del: false,
-    edit: {
-      label: '汇报进度', icon: 'icon-arrow-up', group: '20-selected', style: 'btn-warning', show: 'single-selected', order: 200
-    }
+    edit: {label: '汇报进度', icon: 'icon-arrow-up', group: '20-selected', style: 'btn-warning', show: 'single-selected', order: 200}
 };

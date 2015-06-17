@@ -19,9 +19,11 @@
                 <td>{{status}}</td>
             </tr>
             {{/each}}
-            <tr>
-                <td colspan="3">{{noEvaluateInfo}}</td>
-            </tr>
+            {{#if noEvaluateInfo}}
+                <tr>
+                    <td colspan="5">{{noEvaluateInfo}}</td>
+                </tr>
+            {{/if}}
         </tbody>
     </table>
 {{/view}}

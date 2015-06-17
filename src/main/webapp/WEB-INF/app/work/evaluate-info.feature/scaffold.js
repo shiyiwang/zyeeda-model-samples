@@ -39,12 +39,12 @@ exports.grid = {
 exports.filters = {
     defaults: {
         '!evaluateInfoFilter': 'account',
-        '!workPackageFilter': ['evaluateInfos', 'todoInfos'],
+        '!workPackageFilter': ['evaluateInfos', 'todoInfos', 'taskInfos'],
         '!workListFilter': 'evaluateInfo'
     },
     list: {
         '!evaluateInfoFilter': 'account',
-        '!workPackageFilter': ['evaluateInfos', 'todoInfos'],
+        '!workPackageFilter': ['evaluateInfos', 'todoInfos', 'taskInfos'],
         '!workListFilter': 'evaluateInfo'
     }
 };
@@ -52,6 +52,9 @@ exports.filters = {
 exports.fieldGroups = {
     defaults: [
         'expectTime', 'workload', 'workPrice'
+    ],
+    accountGroup: [
+        'account.accountName'
     ]
 };
 
@@ -59,6 +62,13 @@ exports.forms = {
     defaults: {
         groups: [
             {name: 'defaults', columns: 2}
+        ],
+        size: 'large'
+    },
+    show: {
+        groups: [
+            {name: 'accountGroup'},
+            {name: 'defaults'}
         ],
         size: 'large'
     }

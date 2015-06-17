@@ -39,7 +39,8 @@ exports.cdeio = {
     //工作包
     'src/main/resources/META-INF/mappings/work/work-package.orm.xml',
     'src/main/resources/META-INF/mappings/work/todo-info.orm.xml',
-    'src/main/resources/META-INF/mappings/work/task-info.orm.xml'
+    'src/main/resources/META-INF/mappings/work/task-info.orm.xml',
+    'src/main/resources/META-INF/mappings/work/evaluate-info.orm.xml'
   ],
 
   disableAuthz: false,

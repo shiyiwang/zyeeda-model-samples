@@ -8,7 +8,7 @@
             <tr>
                 <th style="width: 30px;">#</th>
                 <th style="width: 150px;">负责人</th>
-                <th style="width: 60px;">进度</th>
+                <th style="width: 60px;">进度(%)</th>
             </tr>
         </thead>
         <tbody>
@@ -19,9 +19,11 @@
                 <td>{{progress}}</td>
             </tr>
             {{/each}}
-            <tr>
-                <td colspan="3">{{noTaskInfo}}</td>
-            </tr>
+            {{#if noTaskInfo}}
+                <tr>
+                    <td colspan="5">{{noTaskInfo}}</td>
+                </tr>
+            {{/if}}
         </tbody>
     </table>
 {{/view}}
